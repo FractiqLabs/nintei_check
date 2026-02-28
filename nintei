@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>認定調査チェックシート</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap');
+
+        :root {
+            --bg: #f4f1eb;
+            --surface: #faf8f3;
+            --surface2: #edeae3;
+            --border: #d8d4ca;
+            --border-l: #bfbab0;
+            --text: #28251e;
+            --text-sub: #6a6660;
+            --text-dim: #a09c94;
+            --accent: #3a5070;
+            --accent-h: #2c3e58;
+            --gold: #7a5e28;
+            --gold-bg: rgba(122, 94, 40, 0.07);
+            --gold-bd: rgba(122, 94, 40, 0.22);
+            --sel-bg: #dce6f0;
+            --sel-border: #6a90b0;
+            --sel-text: #1e3a58;
+            --row-hover: rgba(0, 0, 0, 0.025);
+            --tokki-bg: rgba(122, 94, 40, 0.05);
+            --tokki-border: rgba(122, 94, 40, 0.25);
+            --radius: 6px;
+            --radius-s: 4px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 400;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px 20px 48px;
+            font-size: 14px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER */
+        header {
+            max-width: 1200px;
+            margin: 0 auto 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .header-title h1 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: .06em;
+        }
+
+        .header-title span {
+            font-size: .78rem;
+            color: var(--text-dim);
+            letter-spacing: .04em;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 7px 16px;
+            border-radius: var(--radius-s);
+            font-family: inherit;
+            font-size: .78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .18s;
+            letter-spacing: .03em;
+            border: 1px solid transparent;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border-color: var(--border-l);
+            color: var(--text-sub);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent-h);
+        }
+
+        .btn-gold {
+            background: var(--gold-bg);
+            border-color: var(--gold-bd);
+            color: var(--gold);
+        }
+
+        .btn-gold:hover {
+            background: rgba(122, 94, 40, .13);
+        }
+
+        /* BASIC INFO */
+        .card {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+        }
+
+        .basic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px 18px;
+        }
+
+        .field label {
+            display: block;
+            font-size: .72rem;
+            color: var(--text-dim);
+            letter-spacing: .06em;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-s);
+            padding: 7px 10px;
+            font-family: inherit;
+            font-size: .88rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color .18s;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--accent);
+        }
+
+        .field select option {
+            background: #fff;
+        }
+
+        /* TABS */
+        .tabs-wrap {
+            max-width: 1200px;
+            margin: 0 auto 16px;
+            display: flex;
+            gap: 2px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 4px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 7px 14px;
+            border: none;
+            border-radius: var(--radius-s);
+            background: transparent;
+            font-family: inherit;
+            font-size: .78rem;
+            font-weight: 500;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all .18s;
+            letter-spacing: .03em;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: var(--surface2);
+        }
+
+        .tab-btn.active {
+            background: var(--surface2);
+            color: var(--accent-h);
+            border: 1px solid var(--border-l);
+        }
+
+        /* PANEL */
+        .group-panel {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .group-panel.active {
+            display: block;
+        }
+
+        .group-header {
+            padding: 13px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .group-header-no {
+            font-size: .7rem;
+            font-weight: 600;
+            color: var(--gold);
+            background: var(--gold-bg);
+            border: 1px solid var(--gold-bd);
+            padding: 2px 8px;
+            border-radius: 2px;
+            letter-spacing: .05em;
+        }
+
+        .group-header-name {
+            font-family: 'Noto Serif JP', serif;
+            font-size: .92rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: .06em;
+        }
+
+        /* TABLE */
+        .survey-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .survey-table thead th {
+            padding: 8px 14px;
+            font-size: .7rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            letter-spacing: .08em;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .survey-table thead th.center {
+            text-align: center;
+        }
+
+        .data-row td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            transition: background .12s;
+        }
+
+        .data-row:hover td {
+            background: var(--row-hover);
+        }
+
+        .item-no {
+            display: inline-block;
+            font-size: .7rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: .06em;
+            min-width: 36px;
+        }
+
+        .item-name {
+            font-size: .88rem;
+            color: var(--text);
+        }
+
+        .item-sub {
+            font-size: .72rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        /* RADIO */
+        .radio-group {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option label {
+            display: inline-block;
+            padding: 4px 11px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: .76rem;
+            color: var(--text-sub);
+            transition: all .15s;
+            white-space: nowrap;
+            letter-spacing: .02em;
+        }
+
+        .radio-option label:hover {
+            border-color: var(--border-l);
+            color: var(--text);
+        }
+
+        .radio-option input:checked+label {
+            background: var(--sel-bg);
+            border-color: var(--sel-border);
+            color: var(--sel-text);
+        }
+
+        /* CHECKBOX */
+        .check-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        .check-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+            font-size: .78rem;
+            color: var(--text-sub);
+        }
+
+        .check-label input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* 各群末尾の特記事項欄 */
+        .tokki-footer {
+            padding: 14px 22px;
+            border-top: 1px solid var(--tokki-border);
+            background: var(--tokki-bg);
+        }
+
+        .tokki-footer-label {
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: .08em;
+            margin-bottom: 7px;
+        }
+
+        .tokki-footer textarea {
+            width: 100%;
+            background: #fff;
+            border: 1px solid var(--tokki-border);
+            border-radius: var(--radius-s);
+            padding: 9px 12px;
+            font-family: inherit;
+            font-size: .85rem;
+            color: var(--text);
+            resize: vertical;
+            min-height: 72px;
+            outline: none;
+            transition: border-color .18s;
+            line-height: 1.7;
+        }
+
+        .tokki-footer textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .tokki-footer textarea::placeholder {
+            color: var(--text-dim);
+            font-size: .8rem;
+        }
+
+        /* 第7群サブヘッダ */
+        .sub-divider td {
+            padding: 8px 14px;
+            font-size: .7rem;
+            color: var(--gold);
+            background: var(--gold-bg);
+            border-top: 1px solid var(--gold-bd);
+            border-bottom: 1px solid var(--gold-bd);
+            letter-spacing: .1em;
+            font-weight: 600;
+        }
+
+        /* PRINT */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+
+            .header-actions,
+            .tabs-wrap {
+                display: none;
+            }
+
+            .group-panel {
+                display: block !important;
+                box-shadow: none;
+                margin-bottom: 12px;
+            }
+
+            .tokki-footer {
+                border: 1px solid #bbb;
+            }
+        }
+
+        @media(max-width:640px) {
+            body {
+                padding: 12px 10px 32px;
+            }
+
+            .radio-option label {
+                padding: 3px 8px;
+                font-size: .72rem;
+            }
+
+            .survey-table thead th,
+            .data-row td {
+                padding: 7px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>認定調査チェックシート</h1>
+            <span>第1群〜第7群 ／ 群別特記事項</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-ghost" onclick="resetAll()">リセット</button>
+            <button class="btn btn-gold" onclick="exportTxt()">テキスト出力</button>
+            <button class="btn btn-ghost" onclick="window.print()">印刷</button>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="basic-grid">
+            <div class="field"><label>調査日</label><input type="date" id="surveyDate"></div>
+            <div class="field"><label>被保険者番号</label><input type="text" id="insNo" placeholder="—"></div>
+            <div class="field"><label>被調査者氏名</label><input type="text" id="name" placeholder="—"></div>
+            <div class="field"><label>生年月日</label><input type="date" id="birthday"></div>
+            <div class="field"><label>性別</label><select id="gender">
+                    <option value="">—</option>
+                    <option>男性</option>
+                    <option>女性</option>
+                </select></div>
+
+        </div>
+    </div>
+
+    <div class="tabs-wrap">
+        <button class="tab-btn active" onclick="showTab(0)">第1群　身体機能</button>
+        <button class="tab-btn" onclick="showTab(1)">第2群　生活機能</button>
+        <button class="tab-btn" onclick="showTab(2)">第3群　認知機能</button>
+        <button class="tab-btn" onclick="showTab(3)">第4群　精神・行動</button>
+        <button class="tab-btn" onclick="showTab(4)">第5群　社会生活</button>
+        <button class="tab-btn" onclick="showTab(5)">第6群　医療</button>
+        <button class="tab-btn" onclick="showTab(6)">第7群　自立度</button>
+    </div>
+
+    <!-- 第1群 -->
+    <div class="group-panel active" id="panel0">
+        <div class="group-header"><span class="group-header-no">第1群</span><span
+                class="group-header-name">身体機能・起居動作</span></div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">番号</th>
+                    <th>調査項目</th>
+                    <th class="center">選択肢</th>
+                </tr>
+            </thead>
+            <tbody id="g1-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第1群</div>
+            <textarea id="tokki_g1" placeholder="第1群（身体機能・起居動作）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <!-- 第2群 -->
+    <div class="group-panel" id="panel1">
+        <div class="group-header"><span class="group-header-no">第2群</span><span class="group-header-name">生活機能</span>
+        </div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">番号</th>
+                    <th>調査項目</th>
+                    <th class="center">選択肢</th>
+                </tr>
+            </thead>
+            <tbody id="g2-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第2群</div>
+            <textarea id="tokki_g2" placeholder="第2群（生活機能）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <!-- 第3群 -->
+    <div class="group-panel" id="panel2">
+        <div class="group-header"><span class="group-header-no">第3群</span><span class="group-header-name">認知機能</span>
+        </div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">番号</th>
+                    <th>調査項目</th>
+                    <th class="center">選択肢</th>
+                </tr>
+            </thead>
+            <tbody id="g3-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第3群</div>
+            <textarea id="tokki_g3" placeholder="第3群（認知機能）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <!-- 第4群 -->
+    <div class="group-panel" id="panel3">
+        <div class="group-header"><span class="group-header-no">第4群</span><span class="group-header-name">精神・行動障害</span>
+        </div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">番号</th>
+                    <th>調査項目</th>
+                    <th class="center">選択肢</th>
+                </tr>
+            </thead>
+            <tbody id="g4-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第4群</div>
+            <textarea id="tokki_g4" placeholder="第4群（精神・行動障害）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <!-- 第5群 -->
+    <div class="group-panel" id="panel4">
+        <div class="group-header"><span class="group-header-no">第5群</span><span
+                class="group-header-name">社会生活への適応</span></div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">番号</th>
+                    <th>調査項目</th>
+                    <th class="center">選択肢</th>
+                </tr>
+            </thead>
+            <tbody id="g5-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第5群</div>
+            <textarea id="tokki_g5" placeholder="第5群（社会生活への適応）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <!-- 第6群 -->
+    <div class="group-panel" id="panel5">
+        <div class="group-header"><span class="group-header-no">第6群</span><span
+                class="group-header-name">過去14日間に受けた特別な医療</span></div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">番号</th>
+                    <th>医療処置・治療</th>
+                    <th style="width:90px" class="center">実施</th>
+                </tr>
+            </thead>
+            <tbody id="g6-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第6群</div>
+            <textarea id="tokki_g6" placeholder="第6群（特別な医療）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <!-- 第7群 -->
+    <div class="group-panel" id="panel6">
+        <div class="group-header"><span class="group-header-no">第7群</span><span class="group-header-name">日常生活自立度</span>
+        </div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th style="width:52px">区分</th>
+                    <th>内容</th>
+                    <th style="width:60px" class="center">選択</th>
+                </tr>
+            </thead>
+            <tbody id="g7-body"></tbody>
+        </table>
+        <div class="tokki-footer">
+            <div class="tokki-footer-label">特記事項　— 第7群</div>
+            <textarea id="tokki_g7" placeholder="第7群（日常生活自立度）に関する特記事項を入力…"></textarea>
+        </div>
+    </div>
+
+    <script>
+        const G1 = [
+            { no: "1-1", name: "麻痺等の有無", sub: "左上肢・右上肢・左下肢・右下肢・その他", opts: ["ない", "左上肢", "右上肢", "左下肢", "右下肢", "その他"] },
+            { no: "1-2", name: "拘縮の有無", sub: "肩関節・股関節・膝関節・その他", opts: ["ない", "肩関節", "股関節", "膝関節", "その他"] },
+            { no: "1-3", name: "寝返り", opts: ["つかまらずできる", "何かにつかまればできる", "できない"] },
+            { no: "1-4", name: "起き上がり", opts: ["つかまらずできる", "何かにつかまればできる", "できない"] },
+            { no: "1-5", name: "座位保持", opts: ["できる", "支えがあればできる", "できない"] },
+            { no: "1-6", name: "両足での立位保持", opts: ["支えなしでできる", "何かにつかまればできる", "できない"] },
+            { no: "1-7", name: "歩行", opts: ["つかまらずできる", "何かにつかまればできる", "できない"] },
+            { no: "1-8", name: "立ち上がり", opts: ["つかまらずできる", "何かにつかまればできる", "できない"] },
+            { no: "1-9", name: "片足での立位保持", opts: ["支えなしで1秒以上できる", "何かにつかまれば1秒以上できる", "できない"] },
+            { no: "1-10", name: "洗身", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "1-11", name: "つめ切り", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "1-12", name: "視力", opts: ["普通", "約1m先の視力あり", "手動弁以上", "明暗の区別のみ", "見えない"] },
+            { no: "1-13", name: "聴力", opts: ["普通", "普通の声が聞こえる", "大きな声なら聞こえる", "耳元で大声なら聞こえる", "聞こえない"] },
+        ];
+        const G2 = [
+            { no: "2-1", name: "移乗", opts: ["介助されていない", "見守り等", "一部介助", "全介助"] },
+            { no: "2-2", name: "移動", opts: ["介助されていない", "見守り等", "一部介助", "全介助"] },
+            { no: "2-3", name: "嚥下", opts: ["できる", "見守り等", "できない"] },
+            { no: "2-4", name: "食事摂取", opts: ["介助されていない", "見守り等", "一部介助", "全介助"] },
+            { no: "2-5", name: "排尿", opts: ["介助されていない", "見守り等", "一部介助", "全介助"] },
+            { no: "2-6", name: "排便", opts: ["介助されていない", "見守り等", "一部介助", "全介助"] },
+            { no: "2-7", name: "口腔清潔", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "2-8", name: "洗顔", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "2-9", name: "整髪", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "2-10", name: "上衣の着脱", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "2-11", name: "ズボン等の着脱", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "2-12", name: "外出頻度", opts: ["週1回以上", "月1〜3回", "月1回未満"] },
+        ];
+        const G3 = [
+            { no: "3-1", name: "意思の伝達", opts: ["できる", "ときどきできる", "できない"] },
+            { no: "3-2", name: "毎日の日課を理解", opts: ["できる", "できない"] },
+            { no: "3-3", name: "生年月日や年齢を言う", opts: ["できる", "できない"] },
+            { no: "3-4", name: "短期記憶", opts: ["できる", "できない"] },
+            { no: "3-5", name: "自分の名前を言う", opts: ["できる", "できない"] },
+            { no: "3-6", name: "今の季節を理解", opts: ["できる", "できない"] },
+            { no: "3-7", name: "場所の理解", opts: ["できる", "できない"] },
+            { no: "3-8", name: "徘徊", opts: ["ない", "ときどきある", "ある"] },
+            { no: "3-9", name: "外出して戻れない", opts: ["ない", "ときどきある", "ある"] },
+        ];
+        const G4 = [
+            { no: "4-1", name: "被害的", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-2", name: "作話", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-3", name: "感情が不安定", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-4", name: "昼夜逆転", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-5", name: "同じ話をする", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-6", name: "大声をだす", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-7", name: "介護に抵抗", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-8", name: "落ち着きなし", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-9", name: "一人で出たがる", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-10", name: "収集癖", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-11", name: "物や衣類を壊す", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-12", name: "ひどい物忘れ", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-13", name: "独り言・独り笑い", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-14", name: "自分勝手に行動する", opts: ["ない", "ときどきある", "ある"] },
+            { no: "4-15", name: "話がまとまらない", opts: ["ない", "ときどきある", "ある"] },
+        ];
+        const G5 = [
+            { no: "5-1", name: "薬の内服", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "5-2", name: "金銭の管理", opts: ["介助されていない", "一部介助", "全介助"] },
+            { no: "5-3", name: "日常の意思決定", opts: ["できる", "特別困難でない毎日の決定はできる", "日常的に困難", "できない"] },
+            { no: "5-4", name: "集団への不適応", opts: ["ない", "ときどきある", "ある"] },
+            { no: "5-5", name: "買い物", opts: ["できる", "できない"] },
+            { no: "5-6", name: "簡単な調理", opts: ["できる", "できない"] },
+        ];
+        const G6 = ["点滴の管理", "中心静脈栄養", "透析", "ストーマ（人工肛門）の処置", "酸素療法", "レスピレーター（人工呼吸器）", "気管切開の処置", "疼痛の看護", "経管栄養", "モニター測定（血圧・心拍・酸素飽和度等）", "褥瘡の処置", "カテーテル（コンドームカテーテル・留置・ウロストーマ等）"];
+        const G7K = [
+            { rank: "自立", desc: "障害等を認めない状態。" },
+            { rank: "J1", desc: "交通機関を利用して外出する。" },
+            { rank: "J2", desc: "隣近所へなら外出する。" },
+            { rank: "A1", desc: "介助により外出し、日中はほとんどベッドから離れて生活する。" },
+            { rank: "A2", desc: "外出頻度が少なく、日中も寝たりおきたりの生活をしている。" },
+            { rank: "B1", desc: "車いすに移乗し、食事・排泄はベッドから離れて行う。" },
+            { rank: "B2", desc: "介助により車いすに移乗する。" },
+            { rank: "C1", desc: "日中もベッド上で過ごし、自力で寝返りをうつ。" },
+            { rank: "C2", desc: "日中もベッド上で過ごし、自力では寝返りもうてない。" },
+        ];
+        const G7N = [
+            { rank: "自立", desc: "認知症なし。" },
+            { rank: "Ⅰ", desc: "日常生活は家庭内及び社会的にほぼ自立している。" },
+            { rank: "Ⅱa", desc: "家庭外で日常生活に支障をきたすような症状・行動がある。" },
+            { rank: "Ⅱb", desc: "家庭内でも日常生活に支障をきたすような症状・行動がある。" },
+            { rank: "Ⅲa", desc: "日中を中心として介護を必要とする症状・行動がある。" },
+            { rank: "Ⅲb", desc: "夜間を中心として介護を必要とする症状・行動がある。" },
+            { rank: "Ⅳ", desc: "常に介護を必要とするような症状・行動が頻繁に見られる。" },
+            { rank: "M", desc: "著しい精神症状・問題行動あるいは重篤な身体疾患があり専門医療を必要とする。" },
+        ];
+
+        function buildRadio(items, tbodyId) {
+            const tbody = document.getElementById(tbodyId);
+            items.forEach(item => {
+                const key = `${tbodyId}_${item.no}`;
+                const opts = item.opts.map((o, i) =>
+                    `<div class="radio-option"><input type="radio" name="${key}" id="${key}_${i}" value="${o}"><label for="${key}_${i}">${o}</label></div>`
+                ).join('');
+                const tr = document.createElement('tr');
+                tr.className = 'data-row';
+                tr.innerHTML = `
+      <td><span class="item-no">${item.no}</span></td>
+      <td><div class="item-name">${item.name}</div>${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}</td>
+      <td><div class="radio-group">${opts}</div></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function buildG6() {
+            const tbody = document.getElementById('g6-body');
+            G6.forEach((name, i) => {
+                const no = `6-${i + 1}`;
+                const tr = document.createElement('tr');
+                tr.className = 'data-row';
+                tr.innerHTML = `
+      <td><span class="item-no">${no}</span></td>
+      <td class="item-name">${name}</td>
+      <td><div class="check-wrap"><label class="check-label"><input type="checkbox" id="chk_g6_${i}"><span>実施あり</span></label></div></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function buildG7() {
+            const tbody = document.getElementById('g7-body');
+            const dH = document.createElement('tr'); dH.className = 'sub-divider';
+            dH.innerHTML = `<td colspan="3">障害老人の日常生活自立度（寝たきり度）</td>`; tbody.appendChild(dH);
+            G7K.forEach((item, i) => {
+                const tr = document.createElement('tr'); tr.className = 'data-row';
+                tr.innerHTML = `
+      <td><span class="item-no">${item.rank}</span></td>
+      <td style="font-size:.82rem;color:var(--text-sub)">${item.desc}</td>
+      <td style="text-align:center"><label class="check-label" style="justify-content:center"><input type="radio" name="g7_k" id="g7k_${i}" value="${item.rank}"><span style="font-size:.75rem">該当</span></label></td>`;
+                tbody.appendChild(tr);
+            });
+            const dN = document.createElement('tr'); dN.className = 'sub-divider';
+            dN.innerHTML = `<td colspan="3">認知症高齢者の日常生活自立度</td>`; tbody.appendChild(dN);
+            G7N.forEach((item, i) => {
+                const tr = document.createElement('tr'); tr.className = 'data-row';
+                tr.innerHTML = `
+      <td><span class="item-no">${item.rank}</span></td>
+      <td style="font-size:.82rem;color:var(--text-sub)">${item.desc}</td>
+      <td style="text-align:center"><label class="check-label" style="justify-content:center"><input type="radio" name="g7_n" id="g7n_${i}" value="${item.rank}"><span style="font-size:.75rem">該当</span></label></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function showTab(idx) {
+            document.querySelectorAll('.group-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+            document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+        }
+
+        function resetAll() {
+            if (!confirm('すべての入力をリセットしますか？')) return;
+            document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+            document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+            document.querySelectorAll('textarea').forEach(t => t.value = '');
+            document.querySelectorAll('input[type=text],input[type=date]').forEach(i => i.value = '');
+            document.getElementById('gender').value = '';
+            document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        function exportTxt() {
+            const pad = (s, n) => String(s).padEnd(n, '　');
+            const hr = (n = 60) => '─'.repeat(n);
+            const lines = [];
+            const surveyDate = document.getElementById('surveyDate').value || '未入力';
+            const name = document.getElementById('name').value || '未入力';
+            const insNo = document.getElementById('insNo').value || '未入力';
+            const birthday = document.getElementById('birthday').value || '未入力';
+            const gender = document.getElementById('gender').value || '未入力';
+            const investigator = document.getElementById('investigator').value || '未入力';
+
+            lines.push('');
+            lines.push('　　認定調査チェックシート');
+            lines.push('');
+            lines.push(hr());
+            lines.push(`  調査日　　　  : ${surveyDate}`);
+            lines.push(`  被保険者番号  : ${insNo}`);
+            lines.push(`  被調査者氏名  : ${name}　（${gender}）`);
+            lines.push(`  生年月日　　  : ${birthday}`);
+
+            lines.push(hr());
+            lines.push('');
+
+            const sections = [
+                { label: '第1群　身体機能・起居動作', items: G1, id: 'g1-body', tokki: 'tokki_g1' },
+                { label: '第2群　生活機能', items: G2, id: 'g2-body', tokki: 'tokki_g2' },
+                { label: '第3群　認知機能', items: G3, id: 'g3-body', tokki: 'tokki_g3' },
+                { label: '第4群　精神・行動障害', items: G4, id: 'g4-body', tokki: 'tokki_g4' },
+                { label: '第5群　社会生活への適応', items: G5, id: 'g5-body', tokki: 'tokki_g5' },
+            ];
+
+            sections.forEach(sec => {
+                lines.push(`【${sec.label}】`);
+                lines.push(hr(50));
+                sec.items.forEach(item => {
+                    const key = `${sec.id}_${item.no}`;
+                    const sel = document.querySelector(`input[name="${key}"]:checked`);
+                    lines.push(`  ${pad(item.no, 6)} ${pad(item.name, 22)} →  ${sel ? sel.value : '（未選択）'}`);
+                });
+                const note = document.getElementById(sec.tokki)?.value.trim();
+                if (note) lines.push('', `  ［特記事項］`, `  ${note.replace(/\n/g, '\n  ')}`);
+                lines.push('');
+            });
+
+            lines.push('【第6群　過去14日間に受けた特別な医療】');
+            lines.push(hr(50));
+            G6.forEach((name, i) => {
+                const chk = document.getElementById(`chk_g6_${i}`);
+                lines.push(`  ${pad(`6-${i + 1}`, 6)} ${pad(name, 30)} →  ${chk && chk.checked ? '実施あり' : '実施なし'}`);
+            });
+            const n6 = document.getElementById('tokki_g6')?.value.trim();
+            if (n6) lines.push('', `  ［特記事項］`, `  ${n6.replace(/\n/g, '\n  ')}`);
+            lines.push('');
+
+            lines.push('【第7群　日常生活自立度】');
+            lines.push(hr(50));
+            const selK = document.querySelector('input[name="g7_k"]:checked');
+            const selN = document.querySelector('input[name="g7_n"]:checked');
+            lines.push(`  障害老人　寝たきり度　 →  ${selK ? selK.value : '（未選択）'}`);
+            lines.push(`  認知症　日常生活自立度 →  ${selN ? selN.value : '（未選択）'}`);
+            const n7 = document.getElementById('tokki_g7')?.value.trim();
+            if (n7) lines.push('', `  ［特記事項］`, `  ${n7.replace(/\n/g, '\n  ')}`);
+            lines.push('');
+            lines.push(hr());
+            lines.push(`  出力日時 : ${new Date().toLocaleString('ja-JP')}`);
+            lines.push('');
+
+            const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `認定調査_${name.replace(/\s/g, '')}_${surveyDate}.txt`; a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
+            buildRadio(G1, 'g1-body');
+            buildRadio(G2, 'g2-body');
+            buildRadio(G3, 'g3-body');
+            buildRadio(G4, 'g4-body');
+            buildRadio(G5, 'g5-body');
+            buildG6();
+            buildG7();
+        });
+    </script>
+</body>
+
+</html>
